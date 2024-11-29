@@ -1,0 +1,30 @@
+#! /bin/bash
+
+current_date=$(date +%F)
+
+# check if today's file exists
+if [ -f "dump/$current_date.md" ]; then
+    echo "File already exists"
+    exit 1
+fi
+
+# create today's file
+echo "## $current_date" > "dump/$current_date.md"
+
+# open today's file in cursor
+cursor "dump/$current_date.md"
+
+# start counting words in today's file in a loop, show message when reached 750 words
+echo "Counting words..."
+
+while true; do
+    clear
+    words=$(wc -w "dump/$current_date.md" | awk '{print $1}')
+    echo "$words words"
+    if [ $words -ge 750 ]; then
+        clear
+        echo "Reached 750 words"
+        break
+    fi
+    sleep 1
+done
